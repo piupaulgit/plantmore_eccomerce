@@ -176,19 +176,18 @@ exports.getProductsByCategory = async (req, res, next, categoryId) => {
   try {
     let products;
     products = await Product.find({ category: categoryId });
-    if (products.length) {
-      console.log("products");
-    } else {
-      console.log("products1");
-    }
     req.products = products;
   } catch (err) {
-    console.log("err");
+    console.log("errfghdfhg");
   }
-  console.log("products3");
   next();
 };
 
 exports.getCategoryProducts = (req, res) => {
-  return res.json(req.products);
+  return res.status(201).json({
+    status: "success",
+    data: {
+      products: req.products,
+    },
+  });
 };
