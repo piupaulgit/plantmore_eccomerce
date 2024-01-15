@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Quicksand:wght@300;400;600;700&family=Satisfy&family=Source+Code+Pro:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+
+  --green: #7FA15A;
+  --red: #F0514A;
+  --yellow: #F4CC62;
+  --black: #333333;
+  --white: #ffffff;
+  --gray: #ABABAB;
+}
+
+body{
+  font-family: 'Quicksand', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+.arrow-img{
+  height: 20px;
+}
