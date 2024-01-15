@@ -178,7 +178,7 @@ exports.getProductsByCategory = async (req, res, next, categoryId) => {
     products = await Product.find({ category: categoryId });
     req.products = products;
   } catch (err) {
-    console.log("errfghdfhg");
+    console.log("err");
   }
   next();
 };
