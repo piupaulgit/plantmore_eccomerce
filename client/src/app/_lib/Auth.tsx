@@ -13,7 +13,7 @@ export function useUser() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (userDetail.email) {
+    if (userDetail?.email) {
       setUser(userDetail);
     } else {
       const accessToken: any = localStorage.getItem("accessToken");
@@ -32,7 +32,7 @@ export function useUser() {
         console.log(err);
       }
     }
-  }, []);
+  }, [user]);
 
   return user;
 }

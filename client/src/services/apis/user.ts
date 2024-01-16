@@ -23,3 +23,10 @@ export const getUserDetailWithToken = (payload: object) => {
     .then((res:any) => res.data)
     .catch((err) => err);
 };
+
+export const logoutUser = () => {
+    return axios
+    .get(`${API_URL}/${url}/logout`)
+    .then((res:any) => res.data)
+    .catch((err) => err);
+}

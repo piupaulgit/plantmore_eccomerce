@@ -9,9 +9,12 @@ import { usePathname } from "next/navigation";
 import { RootState } from "@/redux/store";
 import Link from "next/link";
 import { useUser } from "../_lib/Auth";
+import toast, { Toaster } from "react-hot-toast";
+import { logoutUser } from "@/services/apis/user";
+import { saveUser } from "@/redux/userSlice";
 
 const Header = () => {
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const pathName = usePathname();
   useUser();
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] =
@@ -20,8 +23,21 @@ const Header = () => {
     (state: RootState) => state.UserReducer.currentUser
   );
 
+  const logout = () => {
+    try {
+      logoutUser().then((res) => {
+        if (res.status === "success") {
+          localStorage.removeItem("accessToken");
+          toast.success(res.message);
+          dispatch(saveUser(null));
+        }
+      });
+    } catch {}
+  };
+
   return (
     <header className="flex py-6">
+      <Toaster />
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
           <a href="">
@@ -44,7 +60,7 @@ const Header = () => {
               </Link>
             ))}
           </nav>
-          {!userDetail.email ? (
+          {!userDetail?.email ? (
             <ul className="flex gap-2 text-sm">
               <li className="text-gray-600">
                 <svg
@@ -62,7 +78,7 @@ const Header = () => {
                 <button
                   className="text-gray-600 hover:text-lime-600"
                   onClick={() =>
-                    dispath(
+                    dispatch(
                       modalAction({ modalName: "registerModal", isOpen: true })
                     )
                   }
@@ -75,7 +91,7 @@ const Header = () => {
                 <button
                   className="text-gray-600 hover:text-lime-600"
                   onClick={() =>
-                    dispath(
+                    dispatch(
                       modalAction({ modalName: "loginModal", isOpen: true })
                     )
                   }
@@ -87,7 +103,7 @@ const Header = () => {
           ) : (
             <ul className="flex gap-6 items-center">
               <li>
-                <a className=" relative flex" href="/wishList">
+                <Link className=" relative flex" href="/wishList">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -101,10 +117,10 @@ const Header = () => {
                   <span className=" right-[-12px] top-[-8px] absolute bg-lime-600 w-4 h-4 block text-[8px]/[16px] text-gray-50 rounded-xl text-center">
                     09
                   </span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a className=" relative flex" href="/cart">
+                <Link className=" relative flex" href="/cart">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -118,7 +134,7 @@ const Header = () => {
                   <span className=" right-[-11px] top-[-8px] absolute bg-lime-600 w-4 h-4 block text-[8px]/[16px] text-gray-50 rounded-xl text-center">
                     10
                   </span>
-                </a>
+                </Link>
               </li>
               <li className=" relative">
                 <button
@@ -142,7 +158,7 @@ const Header = () => {
                   <div className=" rounded-md bg-white border-[1px] absolute z-10 min-w-[200px] right-0">
                     <ul>
                       <li className=" font-light text-sm py-2 px-5 text-gray-700 bg-slate-100">
-                        Hello, {userDetail.email}
+                        Hello, {userDetail?.email}
                       </li>
                       <li>
                         <Link
@@ -161,12 +177,12 @@ const Header = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link
-                          className=" font-light text-sm py-2 px-5  text-white bg-red-500 hover:bg-slate-800 block"
-                          href=""
+                        <button
+                          className=" w-full font-light text-sm py-2 px-5  text-white bg-red-500 hover:bg-slate-800"
+                          onClick={logout}
                         >
                           Logout
-                        </Link>
+                        </button>
                       </li>
                     </ul>
                   </div>

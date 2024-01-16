@@ -2,11 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
   
 const initialState = {
-    currentUser : {
-        email: '',
-        accessToken: '',
-        role: null
-    }
+    currentUser : null
 } as any;
 
 interface IUser {
@@ -19,7 +15,7 @@ export const User = createSlice({
     name: "user",
     initialState,
     reducers: {
-        saveUser: (state, action: PayloadAction<IUser>) => {
+        saveUser: (state, action: PayloadAction<IUser|null>) => {
             state.currentUser = action.payload;
         }
     },

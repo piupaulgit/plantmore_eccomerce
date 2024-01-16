@@ -28,28 +28,34 @@ exports.login = async (req, res) => {
     if (!user) {
       return res
         .status(401)
-        .json({ status: 'error', message: "Authentication failed. User not found." });
+        .json({
+          status: "error",
+          message: "Authentication failed. User not found.",
+        });
     }
 
     if (!user.authenticate(password)) {
       return res.status(401).json({
-        status: 'error',
+        status: "error",
         message: "Authentication failed. Email password does not match",
       });
     }
 
-    const token = jsonToken.sign({ _id: user._id, email: user.email, role: user.role }, process.env.SECRETKEY);
+    const token = jsonToken.sign(
+      { _id: user._id, email: user.email, role: user.role },
+      process.env.SECRETKEY
+    );
 
     res.cookie("token", token);
 
     return res.status(200).json({
-      status: 'success',
+      status: "success",
       message: `Congratulation! You are logged in now.`,
       user: {
         _id: user._id,
         email: user.email,
         role: user.role,
-        accessToken: token
+        accessToken: token,
       },
     });
   } catch (err) {
@@ -61,6 +67,7 @@ exports.login = async (req, res) => {
 exports.logout = (req, res) => {
   res.clearCookie("token");
   res.json({
+    status: "success",
     message: "User logged out successfully",
   });
 };
