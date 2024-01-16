@@ -1,14 +1,17 @@
 "use client";
 
+import { saveCategoryAction } from "@/redux/CategorySlice";
 import { getAllCategories } from "@/services/apis/categories";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import ImageHelper from "./ImageHelper";
 import Spinner from "./Spinner";
 
 const CategoryBanners = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<[]>([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     try {
@@ -17,6 +20,7 @@ const CategoryBanners = () => {
         if (res.status === "success") {
           setCategories(res.data.categories);
           setIsLoading(false);
+          dispatch(saveCategoryAction(res.data.categories));
         }
       });
     } catch (err) {

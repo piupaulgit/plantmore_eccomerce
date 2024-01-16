@@ -3,13 +3,15 @@ import ModalReducer from "./modalSlice";
 import UserReducer from './userSlice';
 import ProductsSlice from './ProductsSlice';
 import BannerSlice from './BannerSlice';
+import CategorySlice from './CategorySlice';
 
 export const store = configureStore({
   reducer: {
     ModalReducer,
     UserReducer,
     ProductsSlice,
-    BannerSlice
+    BannerSlice,
+    CategorySlice
   },
   devTools: process.env.NODE_ENV !== "production",
 });

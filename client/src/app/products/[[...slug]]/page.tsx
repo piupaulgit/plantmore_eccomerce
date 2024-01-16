@@ -2,7 +2,11 @@
 
 import OtherPageBanner from "@/app/components/OtherPageBanner";
 import ProductsList from "@/app/components/ProductsList";
-import React, { useEffect } from "react";
+import { saveCategoryAction } from "@/redux/CategorySlice";
+import { RootState } from "@/redux/store";
+import { getAllCategories } from "@/services/apis/categories";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Products = ({
   params,
@@ -11,19 +15,53 @@ const Products = ({
     slug: string[];
   };
 }) => {
+  const categories = useSelector(
+    (state: RootState) => state.CategorySlice.categories
+  );
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   useEffect(() => {
-    console.log(params.slug);
+    if (categories === null) {
+      try {
+        setIsLoading(true);
+        getAllCategories().then((res) => {
+          if (res.status === "success") {
+            setIsLoading(false);
+            dispatch(saveCategoryAction(res.data.categories));
+          }
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }, []);
+
+  const changeCategory = (event: any) => {
+    console.log(event.target.value);
+  };
+
   if (params.slug?.length === 1) {
     return (
       <>
         <OtherPageBanner title={`${params.slug[0]} Products`}></OtherPageBanner>
         <div className="container mx-auto">
           <div className="flex justify-end gap-4">
-            <select className="border-[1px] border-solid border-gray-300 w-[300px] px-3 py-2">
-              <option>Select Category</option>
-              <option>In door</option>
-              <option>Out door</option>
+            <select
+              className="border-[1px] border-solid border-gray-300 w-[300px] px-3 py-2"
+              onChange={changeCategory}
+            >
+              <option value="">
+                {isLoading ? "Loading..." : "Select Category"}
+              </option>
+              {categories?.length &&
+                categories.map((category: any) => {
+                  return (
+                    <option value={category._id} key={categories._id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
             </select>
             <select className="border-[1px] border-solid border-gray-300 w-[200px] px-3 py-2">
               <option>Sort By</option>
@@ -51,10 +89,21 @@ const Products = ({
         <OtherPageBanner title="All Products"></OtherPageBanner>
         <div className="container mx-auto">
           <div className="flex justify-end gap-4">
-            <select className="border-[1px] border-solid border-gray-300 w-[300px] px-3 py-2">
-              <option>Select Category</option>
-              <option>In door</option>
-              <option>Out door</option>
+            <select
+              className="border-[1px] border-solid border-gray-300 w-[300px] px-3 py-2"
+              onChange={changeCategory}
+            >
+              <option value="">
+                {isLoading ? "Loading..." : "Select Category"}
+              </option>
+              {categories?.length &&
+                categories.map((category: any) => {
+                  return (
+                    <option value={category._id} key={categories._id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
             </select>
             <select className="border-[1px] border-solid border-gray-300 w-[200px] px-3 py-2">
               <option>Sort By</option>
@@ -82,10 +131,21 @@ const Products = ({
         <OtherPageBanner title="All Products"></OtherPageBanner>
         <div className="container mx-auto">
           <div className="flex justify-end gap-4">
-            <select className="border-[1px] border-solid border-gray-300 w-[300px] px-3 py-2">
-              <option>Select Category</option>
-              <option>In door</option>
-              <option>Out door</option>
+            <select
+              className="border-[1px] border-solid border-gray-300 w-[300px] px-3 py-2"
+              onChange={changeCategory}
+            >
+              <option value="">
+                {isLoading ? "Loading..." : "Select Category"}
+              </option>
+              {categories?.length &&
+                categories.map((category: any) => {
+                  return (
+                    <option value={category._id} key={categories._id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
             </select>
             <select className="border-[1px] border-solid border-gray-300 w-[200px] px-3 py-2">
               <option>Sort By</option>
