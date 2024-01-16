@@ -1,6 +1,7 @@
 "use client";
 
 import { getAllCategories } from "@/services/apis/categories";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ImageHelper from "./ImageHelper";
 import Spinner from "./Spinner";
@@ -45,9 +46,12 @@ const CategoryBanners = () => {
                     imageData={category?.image?.data}
                   />
                 )}
-                <button className=" absolute bottom-[30px] left-[50%] translate-x-[-50%] w-[60%] h-[50px] bg-white text-gray-900 font-bold text-xl hover:bg-lime-600 hover:text-white">
+                <Link
+                  href={`/products/category/${category._id}`}
+                  className=" absolute bottom-[30px] left-[50%] translate-x-[-50%] w-[60%] h-[50px] bg-white flex justify-center items-center text-gray-900 font-bold text-xl hover:bg-lime-600 hover:text-white"
+                >
                   {category.name}
-                </button>
+                </Link>
               </div>
             );
           })}

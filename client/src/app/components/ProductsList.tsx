@@ -10,6 +10,7 @@ import Spinner from "./Spinner";
 interface IProductsListProps {
   apiEndPoint?: Object;
   productTag: any;
+  category?: string;
 }
 
 const ProductsList = (props: IProductsListProps) => {
@@ -20,7 +21,10 @@ const ProductsList = (props: IProductsListProps) => {
   useEffect(() => {
     setIsLoading(true);
     try {
-      getProducts(props.apiEndPoint).then((res: any) => {
+      getProducts({
+        filters: props.apiEndPoint,
+        category: props.category || undefined,
+      }).then((res: any) => {
         if (res.status === "success") {
           dispatch(
             addProductsAction({ [props.productTag]: res.data.products })

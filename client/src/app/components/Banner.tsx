@@ -24,7 +24,6 @@ const Banner = () => {
   const bannersFromStore = useSelector((state: RootState) => state.BannerSlice);
 
   useEffect(() => {
-    console.log(bannersFromStore);
     setIsLoading(true);
     try {
       getAllBanners().then((res: any) => {

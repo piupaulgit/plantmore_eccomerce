@@ -23,7 +23,6 @@ const SinglePage = ({ params }: any) => {
       getSingleProduct(params.productId).then((res: any) => {
         if (res.status === "success") {
           setProduct(res.data.product);
-          console.log(res.data.product, "pp");
           setIsLoading(false);
         }
       });
