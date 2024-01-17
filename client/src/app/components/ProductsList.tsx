@@ -4,6 +4,7 @@ import { addProductsAction } from "@/redux/ProductsSlice";
 import { getProducts } from "@/services/apis/products";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import InfoCard from "./InfoCard";
 import ProductCard from "./ProductCard";
 import Spinner from "./Spinner";
 
@@ -51,7 +52,8 @@ const ProductsList = (props: IProductsListProps) => {
       }`}
     >
       {isLoading && <Spinner title="loading Products..." />}
-      {productsList.length > 0 &&
+      {!isLoading &&
+        productsList?.length > 0 &&
         productsList.map((product: any) => {
           return (
             <div className="w-[24%] mb-5">
@@ -59,6 +61,9 @@ const ProductsList = (props: IProductsListProps) => {
             </div>
           );
         })}
+      {!isLoading && productsList?.length === 0 && (
+        <InfoCard text="There is no product" type="warning" />
+      )}
     </div>
   );
 };

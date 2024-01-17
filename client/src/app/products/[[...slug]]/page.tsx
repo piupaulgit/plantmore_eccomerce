@@ -58,7 +58,7 @@ const Products = ({
               value={selectedCategory}
             >
               <option value="all">
-                {isLoading ? "Loading..." : "Select Category"}
+                {isLoading ? "Loading..." : "All Categories"}
               </option>
               {categories?.length &&
                 categories.map((category: any) => {
@@ -101,7 +101,7 @@ const Products = ({
               value={selectedCategory}
             >
               <option value="all">
-                {isLoading ? "Loading..." : "Select Category"}
+                {isLoading ? "Loading..." : "All Categories"}
               </option>
               {categories?.length &&
                 categories.map((category: any) => {
@@ -146,7 +146,7 @@ const Products = ({
               value={selectedCategory}
             >
               <option value="all">
-                {isLoading ? "Loading..." : "Select Category"}
+                {isLoading ? "Loading..." : "All Categories"}
               </option>
               {categories?.length &&
                 categories.map((category: any) => {
