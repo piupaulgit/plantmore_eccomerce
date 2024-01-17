@@ -20,6 +20,7 @@ const Products = ({
   );
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   useEffect(() => {
     if (categories === null) {
@@ -35,10 +36,14 @@ const Products = ({
         console.log(err);
       }
     }
+
+    if (params?.slug[0] === "category") {
+      setSelectedCategory(params.slug[1]);
+    }
   }, []);
 
   const changeCategory = (event: any) => {
-    console.log(event.target.value);
+    setSelectedCategory(event.target.value);
   };
 
   if (params.slug?.length === 1) {
@@ -50,8 +55,9 @@ const Products = ({
             <select
               className="border-[1px] border-solid border-gray-300 w-[300px] px-3 py-2"
               onChange={changeCategory}
+              value={selectedCategory}
             >
-              <option value="">
+              <option value="all">
                 {isLoading ? "Loading..." : "Select Category"}
               </option>
               {categories?.length &&
@@ -92,8 +98,9 @@ const Products = ({
             <select
               className="border-[1px] border-solid border-gray-300 w-[300px] px-3 py-2"
               onChange={changeCategory}
+              value={selectedCategory}
             >
-              <option value="">
+              <option value="all">
                 {isLoading ? "Loading..." : "Select Category"}
               </option>
               {categories?.length &&
@@ -111,17 +118,19 @@ const Products = ({
               <option>Low to high</option>
             </select>
           </div>
-          <div className="">
-            <ProductsList
-              productTag="all"
-              category={params.slug[1]}
-              apiEndPoint={{
-                filters: {
-                  limit: 20,
-                },
-              }}
-            />
-          </div>
+          {selectedCategory && (
+            <div className="">
+              <ProductsList
+                productTag="all"
+                category={selectedCategory}
+                apiEndPoint={{
+                  filters: {
+                    limit: 20,
+                  },
+                }}
+              />
+            </div>
+          )}
         </div>
       </>
     );
@@ -134,8 +143,9 @@ const Products = ({
             <select
               className="border-[1px] border-solid border-gray-300 w-[300px] px-3 py-2"
               onChange={changeCategory}
+              value={selectedCategory}
             >
-              <option value="">
+              <option value="all">
                 {isLoading ? "Loading..." : "Select Category"}
               </option>
               {categories?.length &&

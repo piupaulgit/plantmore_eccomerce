@@ -19,6 +19,14 @@ const ProductsList = (props: IProductsListProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    getProductsFromApi();
+  }, []);
+
+  useEffect(() => {
+    getProductsFromApi();
+  }, [props?.category]);
+
+  const getProductsFromApi = () => {
     setIsLoading(true);
     try {
       getProducts({
@@ -34,7 +42,7 @@ const ProductsList = (props: IProductsListProps) => {
         }
       });
     } catch {}
-  }, []);
+  };
 
   return (
     <div
@@ -51,7 +59,6 @@ const ProductsList = (props: IProductsListProps) => {
             </div>
           );
         })}
-      ;
     </div>
   );
 };
