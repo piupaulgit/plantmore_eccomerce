@@ -14,6 +14,9 @@ export const getProducts = (payload:any) => {
 
    if(payload.category){
     completeUrl = `${API_URL}/${url}/category/${payload.category}`
+    if(payload.category === 'all'){
+        completeUrl = `${API_URL}/${url}/all${filterString}`
+    }
    }else{
     completeUrl = `${API_URL}/${url}/all${filterString}`
    }
