@@ -11,6 +11,10 @@ const CartSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    count: {
+      type: Number,
+      default: 1,
+    },
   },
   { timestamps: true }
 );
