@@ -2,12 +2,11 @@ const Cart = require("../models/cart");
 
 exports.addToCart = async (req, res) => {
   try {
-    const existingCartItem = await Cart.findOne({
-      "cart.product": req.body.cart.product,
-    });
+    const { product } = req.body.cart;
+    const existingCartItem = await Cart.findOne({ product });
 
     if (existingCartItem) {
-      existingCartItem.cart.count += 1;
+      existingCartItem.count += 1;
       const updatedCartItem = await existingCartItem.save();
 
       res.json({
@@ -16,9 +15,7 @@ exports.addToCart = async (req, res) => {
         message: "Product count updated in your cart",
       });
     } else {
-      // If the product is not in the cart, add it
-      const cartInstance = new Cart({ cart: req.body.cart });
-      const savedCartItem = await cartInstance.save();
+      const savedCartItem = await Cart.create(req.body.cart);
 
       res.json({
         status: "success",
