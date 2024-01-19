@@ -71,21 +71,17 @@ exports.deleteItemsFromCart = async (req, res) => {
   const existingCartItem = await Cart.findOne({ product });
 
   if (existingCartItem) {
-    if (existingCartItem.count === 1) {
-      const deletedProduct = await existingCartItem.deleteOne();
-      res.json({
-        status: "success",
-        data: deletedProduct,
-        message: "Product deleted from your cart",
-      });
-    } else {
-      existingCartItem.count -= 1;
-      const updatedCartItem = await existingCartItem.save();
-      res.json({
-        status: "success",
-        data: updatedCartItem,
-        message: "Product count reduced",
-      });
-    }
+    const deletedProduct = await existingCartItem.deleteOne();
+    res.json({
+      status: "success",
+      data: deletedProduct,
+      message: "Product deleted from your cart",
+    });
+  } else {
+    res.json({
+      status: "error",
+      data: deletedProduct,
+      message: "Could not find product with the given id",
+    });
   }
 };
