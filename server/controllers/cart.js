@@ -42,16 +42,50 @@ exports.getAllCartProducts = async (req, res) => {
   } catch (err) {}
 };
 
-exports.deleteItemsFromCart = async (req, res) => {
-  const productId = req.body.productId;
+exports.reduceItemsFromCart = async (req, res) => {
+  const { product } = req.body;
+  const existingCartItem = await Cart.findOne({ product });
 
-  try {
-    await Cart.deleteOne({ _id: productId });
-    res.status(201).json({
-      status: "success",
-      message: "Product successfully removed from your cart",
-    });
-  } catch (err) {
-    console.log(err);
+  if (existingCartItem) {
+    if (existingCartItem.count === 1) {
+      const deletedProduct = await existingCartItem.deleteOne();
+      res.json({
+        status: "success",
+        data: deletedProduct,
+        message: "Product deleted from your cart",
+      });
+    } else {
+      existingCartItem.count -= 1;
+      const updatedCartItem = await existingCartItem.save();
+      res.json({
+        status: "success",
+        data: updatedCartItem,
+        message: "Product count reduced",
+      });
+    }
+  }
+};
+
+exports.deleteItemsFromCart = async (req, res) => {
+  const { product } = req.body;
+  const existingCartItem = await Cart.findOne({ product });
+
+  if (existingCartItem) {
+    if (existingCartItem.count === 1) {
+      const deletedProduct = await existingCartItem.deleteOne();
+      res.json({
+        status: "success",
+        data: deletedProduct,
+        message: "Product deleted from your cart",
+      });
+    } else {
+      existingCartItem.count -= 1;
+      const updatedCartItem = await existingCartItem.save();
+      res.json({
+        status: "success",
+        data: updatedCartItem,
+        message: "Product count reduced",
+      });
+    }
   }
 };
