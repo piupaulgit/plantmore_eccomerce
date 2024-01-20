@@ -42,25 +42,40 @@ exports.getAllCartProducts = async (req, res) => {
   } catch (err) {}
 };
 
-exports.reduceItemsFromCart = async (req, res) => {
+exports.changeItemCountInCart = async (req, res) => {
   const { product } = req.body;
   const existingCartItem = await Cart.findOne({ product });
 
-  if (existingCartItem) {
-    if (existingCartItem.count === 1) {
-      const deletedProduct = await existingCartItem.deleteOne();
-      res.json({
-        status: "success",
-        data: deletedProduct,
-        message: "Product deleted from your cart",
-      });
-    } else {
-      existingCartItem.count -= 1;
+  if (req.body.actionType === "reduce") {
+    if (existingCartItem) {
+      if (existingCartItem.count === 1) {
+        const deletedProduct = await existingCartItem.deleteOne();
+        res.json({
+          status: "success",
+          data: deletedProduct,
+          message: "Product deleted from your cart",
+        });
+      } else {
+        existingCartItem.count -= 1;
+        const updatedCartItem = await existingCartItem.save();
+        res.json({
+          status: "success",
+          data: updatedCartItem,
+          message: "Product count reduced",
+        });
+      }
+    }
+  } else if (req.body.actionType === "increase") {
+    const { product } = req.body;
+    const existingCartItem = await Cart.findOne({ product });
+
+    if (existingCartItem) {
+      existingCartItem.count += 1;
       const updatedCartItem = await existingCartItem.save();
       res.json({
         status: "success",
         data: updatedCartItem,
-        message: "Product count reduced",
+        message: "Product count increase",
       });
     }
   }
