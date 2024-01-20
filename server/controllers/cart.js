@@ -1,9 +1,11 @@
 const Cart = require("../models/cart");
+const mongoose = require("mongoose");
 
 exports.addToCart = async (req, res) => {
+  const userId = req.params.userId;
   try {
     const { product } = req.body.cart;
-    const existingCartItem = await Cart.findOne({ product });
+    const existingCartItem = await Cart.findOne({ product, userId });
 
     if (existingCartItem) {
       existingCartItem.count += 1;
@@ -15,7 +17,10 @@ exports.addToCart = async (req, res) => {
         message: "Product count updated in your cart",
       });
     } else {
-      const savedCartItem = await Cart.create(req.body.cart);
+      const savedCartItem = await Cart.create({
+        userId: userId,
+        product: req.body.cart.product,
+      });
 
       res.json({
         status: "success",
