@@ -1,28 +1,52 @@
 const { Order } = require("../models/order");
 
 exports.addOrder = async (req, res) => {
-  req.body.order.user = req.profile;
-  try{
+  try {
     const newOrder = await Order.create(req.body.order);
-    res.json(newOrder);
-  }catch(err){
-    console.log(err)
+    res.json({
+      status: "success",
+      data: newOrder,
+      message: "Your order has been placed successfully",
+    });
+  } catch (err) {
+    res.json({
+      status: "error",
+      message: "Internal server error",
+    });
   }
 };
 
-exports.getAllOrders = async(req,res) => {
-    try{
-        const orders = await Order.find().populate("user", "name");
-        res.json(orders)
-    }catch(err){
-        console.log(err)
-    }
-}
+exports.getAllOrdersForUser = async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const orders = await Order.find({ user: userId }).populate("user", "name");
+    res.json({
+      statue: "success",
+      data: orders,
+      message: "Orders fetched successfully",
+    });
+  } catch (err) {
+    re.json({
+      status: "error",
+      message: "internal server error",
+    });
+  }
+};
 
-exports.getOrdersByUser = async(req, res) => {
-    try{
+exports.getAllOrdersForAdmin = async (req, res) => {
+  try {
+    const orders = await Order.find().populate("user", "name");
+    res.json({
+      statue: "success",
+      data: orders,
+      message: "Orders fetched successfully",
+    });
+  } catch (err) {
+    re.json({
+      status: "error",
+      message: "internal server error",
+    });
+  }
+};
 
-    }catch(err){
-        
-    }
-}
+exports.updateOrderStatus = (req, res) => {};

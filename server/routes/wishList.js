@@ -1,5 +1,5 @@
 const express = require("express");
-const { isSignedIn } = require("../controllers/auth");
+const { isSignedIn, isAuthenticated } = require("../controllers/auth");
 const { getUserById } = require("../controllers/user");
 const {
   addToWishList,
@@ -10,8 +10,13 @@ const router = express.Router();
 
 router.param("userId", getUserById);
 
-router.post("/add/:userId", isSignedIn, addToWishList);
-router.get("/all/:userId", isSignedIn, getAllWishListItems);
-router.delete("/delete/:userId", isSignedIn, deleteItemsFromWishList);
+router.post("/add/:userId", isSignedIn, isAuthenticated, addToWishList);
+router.get("/all/:userId", isSignedIn, isAuthenticated, getAllWishListItems);
+router.delete(
+  "/delete/:userId",
+  isSignedIn,
+  isAuthenticated,
+  deleteItemsFromWishList
+);
 
 module.exports = router;
