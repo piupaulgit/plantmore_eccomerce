@@ -1,9 +1,14 @@
 const wishList = require("../models/wishList");
 
 exports.addToWishList = async (req, res) => {
+  const userId = req.params.userId;
+
   try {
     const { product } = req.body.wishList;
-    const existingWishListItem = await wishList.findOne({ product });
+    const existingWishListItem = await wishList.findOne({
+      product,
+      user: userId,
+    });
 
     if (existingWishListItem) {
       res.json({
@@ -28,8 +33,11 @@ exports.addToWishList = async (req, res) => {
 };
 
 exports.getAllWishListItems = async (req, res) => {
+  const userId = req.params.userId;
   try {
-    const wishListItems = await wishList.find().populate("product", "name");
+    const wishListItems = await wishList
+      .find({ user: userId })
+      .populate("product", "name");
     res.json({
       status: "success",
       data: wishListItems,
@@ -43,8 +51,13 @@ exports.getAllWishListItems = async (req, res) => {
 };
 
 exports.deleteItemsFromWishList = async (req, res) => {
+  const userId = req.params.userId;
   const { product } = req.body;
-  const existingWishListItem = await wishList.findOne({ product });
+
+  const existingWishListItem = await wishList.findOne({
+    product,
+    user: userId,
+  });
 
   if (existingWishListItem) {
     const deletedProduct = await existingWishListItem.deleteOne();
