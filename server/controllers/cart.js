@@ -1,11 +1,10 @@
 const Cart = require("../models/cart");
-const mongoose = require("mongoose");
 
 exports.addToCart = async (req, res) => {
   const userId = req.params.userId;
   try {
     const { product } = req.body.cart;
-    const existingCartItem = await Cart.findOne({ product, userId });
+    const existingCartItem = await Cart.findOne({ product, user: userId });
 
     if (existingCartItem) {
       existingCartItem.count += 1;
@@ -17,10 +16,7 @@ exports.addToCart = async (req, res) => {
         message: "Product count updated in your cart",
       });
     } else {
-      const savedCartItem = await Cart.create({
-        userId: userId,
-        product: req.body.cart.product,
-      });
+      const savedCartItem = await Cart.create(req.body.cart);
 
       res.json({
         status: "success",
@@ -38,8 +34,12 @@ exports.addToCart = async (req, res) => {
 };
 
 exports.getAllCartProducts = async (req, res) => {
+  const userId = req.params.userId;
   try {
-    const cartItems = await Cart.find().populate("product", "name");
+    const cartItems = await Cart.find({ user: userId }).populate(
+      "product",
+      "name"
+    );
     res.json({
       status: "success",
       data: cartItems,
@@ -48,8 +48,9 @@ exports.getAllCartProducts = async (req, res) => {
 };
 
 exports.changeItemCountInCart = async (req, res) => {
+  const userId = req.params.userId;
   const { product } = req.body;
-  const existingCartItem = await Cart.findOne({ product });
+  const existingCartItem = await Cart.findOne({ product, user: userId });
 
   if (req.body.actionType === "reduce") {
     if (existingCartItem) {
@@ -71,9 +72,6 @@ exports.changeItemCountInCart = async (req, res) => {
       }
     }
   } else if (req.body.actionType === "increase") {
-    const { product } = req.body;
-    const existingCartItem = await Cart.findOne({ product });
-
     if (existingCartItem) {
       existingCartItem.count += 1;
       const updatedCartItem = await existingCartItem.save();
@@ -87,8 +85,9 @@ exports.changeItemCountInCart = async (req, res) => {
 };
 
 exports.deleteItemsFromCart = async (req, res) => {
+  const userId = req.params.userId;
   const { product } = req.body;
-  const existingCartItem = await Cart.findOne({ product });
+  const existingCartItem = await Cart.findOne({ product, user: userId });
 
   if (existingCartItem) {
     const deletedProduct = await existingCartItem.deleteOne();
