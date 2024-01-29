@@ -20,9 +20,10 @@ export function useUser() {
       try {
         const decodedUser: any = jwt.decode(accessToken);
         setUser(decodedUser);
-        const { email, role } = decodedUser;
+        const { email, role, _id } = decodedUser;
         dispatch(
           saveUser({
+            _id,
             email,
             accessToken,
             role,

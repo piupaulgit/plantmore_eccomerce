@@ -38,6 +38,7 @@ exports.getAllWishListItems = async (req, res) => {
     const wishListItems = await wishList
       .find({ user: userId })
       .populate("product", "name");
+
     res.json({
       status: "success",
       data: wishListItems,

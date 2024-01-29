@@ -44,11 +44,12 @@ const LoginModal = () => {
       userLogin(user).then((res: any) => {
         if (res.status === "success") {
           toast.success(res.message);
-          const { email, accessToken, role } = res.user;
+          const { email, accessToken, role, _id } = res.user;
           localStorage.setItem("accessToken", accessToken);
           dispatch(modalAction({ modalName: "loginModal", isOpen: false }));
           dispatch(
             saveUser({
+              _id,
               email,
               accessToken,
               role,

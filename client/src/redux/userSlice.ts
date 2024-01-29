@@ -6,6 +6,7 @@ const initialState = {
 } as any;
 
 interface IUser {
+    _id: string,
     email: string,
     accessToken: string,
     role: Number

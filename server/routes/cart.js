@@ -5,6 +5,7 @@ const {
   getAllCartProducts,
   changeItemCountInCart,
   deleteItemsFromCart,
+  getTotalNumberOfItemsInCart,
 } = require("../controllers/cart");
 const { getUserById } = require("../controllers/user");
 const router = express.Router();
@@ -13,6 +14,12 @@ router.param("userId", getUserById);
 
 router.post("/add/:userId", isSignedIn, isAuthenticated, addToCart);
 router.get("/all/:userId", isSignedIn, isAuthenticated, getAllCartProducts);
+router.get(
+  "/totalNumberOfItemsInCart/:userId",
+  isSignedIn,
+  isAuthenticated,
+  getTotalNumberOfItemsInCart
+);
 router.put(
   "/changeCount/:userId",
   isSignedIn,

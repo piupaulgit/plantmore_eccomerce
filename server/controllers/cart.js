@@ -33,6 +33,18 @@ exports.addToCart = async (req, res) => {
   }
 };
 
+exports.getTotalNumberOfItemsInCart = async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const cartItems = await Cart.find({ user: userId });
+
+    res.json({
+      status: "success",
+      data: cartItems.length,
+    });
+  } catch (err) {}
+};
+
 exports.getAllCartProducts = async (req, res) => {
   const userId = req.params.userId;
   try {
@@ -40,6 +52,8 @@ exports.getAllCartProducts = async (req, res) => {
       "product",
       "name"
     );
+
+    console.log(cartItems.length, "oo");
     res.json({
       status: "success",
       data: cartItems,
