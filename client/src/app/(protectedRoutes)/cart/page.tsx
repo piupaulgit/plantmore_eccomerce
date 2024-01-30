@@ -1,15 +1,36 @@
+"use client";
+
 import { productSample } from "@/assets/images";
 import OtherPageBanner from "../../components/OtherPageBanner";
 import SelectedProductList from "../../components/SelectedProductList";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getAllItemsInCart } from "@/services/apis/cart";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const Cart = () => {
+  const userDetail = useSelector(
+    (state: RootState) => state.UserReducer.currentUser
+  );
+
+  const [productsInCart, setProductsInCart] = useState<any>([]);
+
+  useEffect(() => {
+    try {
+      getAllItemsInCart(userDetail._id, userDetail.accessToken).then((res) => {
+        if (res.status === "success") {
+          setProductsInCart(res.data);
+        }
+      });
+    } catch {}
+  }, []);
+
   return (
     <>
       <OtherPageBanner title="Your Cart"></OtherPageBanner>
       <div className="container mx-auto">
-        <SelectedProductList></SelectedProductList>
+        <SelectedProductList products={productsInCart}></SelectedProductList>
         <div className="mt-6 flex justify-between">
           <div className="flex gap-2 self-start flex-1">
             <input

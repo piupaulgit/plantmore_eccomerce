@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import Quantity from "./Quantity";
 
-const SelectedProductList = () => {
+const SelectedProductList = (props: { IProps: any }) => {
   return (
     <div>
       <table className="w-full text-left">
@@ -16,6 +16,9 @@ const SelectedProductList = () => {
           </tr>
         </thead>
         <tbody>
+          {/* {
+            props.products.length > 
+          } */}
           <tr className="border-b-[1px] border-gray-200 border-solid">
             <td className="py-6 flex items-center gap-4">
               <button>
