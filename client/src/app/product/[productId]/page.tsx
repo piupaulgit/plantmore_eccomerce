@@ -54,7 +54,7 @@ const SinglePage = ({ params }: any) => {
                   posuere metus vitae arcu imperdiet, id aliquet ante
                   scelerisque. Sed sit amet sem.
                 </p>
-                <Quantity label={true}></Quantity>
+                <Quantity label={true} max={20}></Quantity>
                 <div className="flex gap-3 mt-10">
                   <button className="bg-lime-600 text-white px-10 py-4 flex gap-3 items-center hover:bg-gray-700">
                     <svg

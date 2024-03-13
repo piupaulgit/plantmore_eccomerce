@@ -5,6 +5,7 @@ import ProductsList from "@/app/components/ProductsList";
 import { saveCategoryAction } from "@/redux/CategorySlice";
 import { RootState } from "@/redux/store";
 import { getAllCategories } from "@/services/apis/categories";
+import { getProductsBycategoryId } from "@/services/apis/products";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -37,10 +38,16 @@ const Products = ({
       }
     }
 
-    if (params?.slug[0] === "category") {
+    if (Object.keys(params).length > 0 && params?.slug[0] === "category") {
       setSelectedCategory(params.slug[1]);
     }
   }, []);
+
+  useEffect(() => {
+    getProductsBycategoryId(selectedCategory).then((res: any) => {
+      console.log(res);
+    });
+  }, [selectedCategory]);
 
   const changeCategory = (event: any) => {
     setSelectedCategory(event.target.value);

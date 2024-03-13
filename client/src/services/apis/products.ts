@@ -32,4 +32,11 @@ export const getSingleProduct = (payload:any) => {
          .get(`${API_URL}/${url}/${payload}`)
          .then((res) => res.data)
          .catch((err) => err.response.data);
- };
+};
+
+export const getProductsBycategoryId = (id: string) => {
+    return axios
+    .get(`${API_URL}/${url}/category/${id}`)
+    .then((res) => res.data)
+    .catch((err) => err.response.data);
+}

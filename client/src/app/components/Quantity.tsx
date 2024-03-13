@@ -1,18 +1,37 @@
 "use client";
 
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+interface IQuantityProps {
+  label?: boolean;
+  min?: number;
+  max?: number;
+}
 
-const Quantity = (props: any) => {
-  const [value, setValue] = useState<number>(0);
+const Quantity = (props: IQuantityProps) => {
+  const [value, setValue] = useState<number>((props.min && props.min) || 1);
 
   const changeValue = (actionType: string) => {
-    actionType === "increment"
-      ? setValue(value + 1)
-      : value !== 0 && setValue(value - 1);
+    if (actionType === "increment") {
+      if (value === props.max) {
+        toast.error(`You can't add more than ${props.max} items`);
+      } else {
+        setValue(value + 1);
+      }
+    } else {
+      if ((props.min && value === props.min) || value === 1) {
+        toast.error(
+          `You can't add less than ${(props.min && props.min) || 1} items`
+        );
+      } else {
+        setValue(value - 1);
+      }
+    }
   };
 
   return (
     <div className="flex gap-12">
+      <Toaster />
       {props.label && (
         <label className="text-gray-700 font-light">QUANTITY</label>
       )}
